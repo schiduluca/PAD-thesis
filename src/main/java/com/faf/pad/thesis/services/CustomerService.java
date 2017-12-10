@@ -8,9 +8,9 @@ import java.util.List;
 
 public interface CustomerService {
 
-    CustomerView findById(Long id);
+    CustomerView findById(Long id, String fields);
 
-    List<CustomerView> getAll();
+    List<CustomerView> getAll(String fields);
 
     CustomerView create(CustomerView customer);
 }

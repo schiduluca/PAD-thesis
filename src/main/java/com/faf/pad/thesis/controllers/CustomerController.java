@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.ws.rs.QueryParam;
 import java.util.List;
 
 @RestController
@@ -32,14 +33,14 @@ public class CustomerController {
 
 
     @RequestMapping(method = RequestMethod.GET)
-    HttpEntity<List<CustomerView>> getAll() {
-        List<CustomerView> linksForList = hateoasService.getLinksForList(customerService.getAll());
+    HttpEntity<List<CustomerView>> getAll(@QueryParam("fields") String fields) {
+        List<CustomerView> linksForList = hateoasService.getLinksForList(customerService.getAll(fields));
         return new ResponseEntity<>(linksForList, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/customer/{id}", method = RequestMethod.GET)
-    HttpEntity<CustomerView> getById(@PathVariable("id") Long id) {
-        CustomerView linksForEntity = hateoasService.getLinksForEntity(customerService.findById(id), id);
+    HttpEntity<CustomerView> getById(@PathVariable("id") Long id, @QueryParam("fields") String fields) {
+        CustomerView linksForEntity = hateoasService.getLinksForEntity(customerService.findById(id, fields), id);
         return new ResponseEntity<>(linksForEntity, HttpStatus.OK);
     }
 

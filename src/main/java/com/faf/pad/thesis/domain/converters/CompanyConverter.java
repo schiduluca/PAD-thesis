@@ -20,7 +20,7 @@ public class CompanyConverter extends Converter<Company, CompanyView> {
         Company company = new Company();
         company.setCountry(companyView.getCountry());
         company.setName(companyView.getName());
-        company.setRating(company.getRating());
+        company.setRating(companyView.getRating());
         return company;
     }
 }

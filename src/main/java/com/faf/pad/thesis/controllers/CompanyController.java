@@ -29,13 +29,13 @@ public class CompanyController {
     }
 
     @RequestMapping(method = RequestMethod.GET)
-    public HttpEntity<List<CompanyView>> getAll(@RequestParam("fields") String fields) {
+    public HttpEntity<List<CompanyView>> getAll(@QueryParam("fields") String fields) {
         List<CompanyView> collect = service.getLinksForList(companyService.getAll(fields));
         return new ResponseEntity<>(collect, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/company/{id}", method = RequestMethod.GET)
-    public HttpEntity<CompanyView> getById(@PathVariable("id") Long id, @RequestParam("fields") String fields) {
+    public HttpEntity<CompanyView> getById(@PathVariable("id") Long id, @QueryParam("fields") String fields) {
         CompanyView linksForEntity = service.getLinksForEntity(companyService.findById(id, fields), id);
         return new ResponseEntity<>(linksForEntity, HttpStatus.OK);
     }
