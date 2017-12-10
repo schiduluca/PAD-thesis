@@ -2,6 +2,9 @@ package com.faf.pad.thesis.domain.views;
 
 import org.springframework.hateoas.ResourceSupport;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement
 public class CustomerView extends ResourceSupport {
     private Long id;
     private String name;

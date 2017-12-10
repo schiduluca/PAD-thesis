@@ -2,8 +2,10 @@ package com.faf.pad.thesis.domain.views;
 
 import org.springframework.hateoas.ResourceSupport;
 
+import javax.xml.bind.annotation.XmlRootElement;
 import java.util.List;
 
+@XmlRootElement
 public class CompanyView extends ResourceSupport {
 
     private Long id;
