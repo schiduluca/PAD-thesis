@@ -26,7 +26,7 @@ public class ServiceConfig {
 
     @Bean
     public CustomerService customerService() {
-        return new CustomerServiceImpl(customerRepository, restTemplate);
+        return new CustomerServiceImpl(customerRepository, restTemplate, fieldSelectorService());
     }
 
     @Bean
@@ -41,7 +41,7 @@ public class ServiceConfig {
 
     @Bean
     public CompanyService companyService() {
-        return new CompanyServiceImpl(companyRepository, fieldSelectorService());
+        return new CompanyServiceImpl(companyRepository, fieldSelectorService(), restTemplate);
     }
 
     @Bean

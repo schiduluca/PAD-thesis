@@ -5,7 +5,9 @@ import com.faf.pad.thesis.domain.views.CompanyView;
 import com.faf.pad.thesis.repository.CompanyRepository;
 import com.faf.pad.thesis.services.CompanyService;
 import com.faf.pad.thesis.services.FieldSelectorService;
+import com.netflix.discovery.converters.Auto;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.client.RestTemplate;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
@@ -20,11 +22,15 @@ public class CompanyServiceImpl implements CompanyService {
     @Autowired
     private final FieldSelectorService fieldSelectorService;
 
+    @Auto
+    private final RestTemplate restTemplate;
+
     private final CompanyConverter converter = new CompanyConverter();
 
-    public CompanyServiceImpl(CompanyRepository companyRepository, FieldSelectorService fieldSelectorService) {
+    public CompanyServiceImpl(CompanyRepository companyRepository, FieldSelectorService fieldSelectorService, RestTemplate restTemplate) {
         this.companyRepository = companyRepository;
         this.fieldSelectorService = fieldSelectorService;
+        this.restTemplate = restTemplate;
     }
 
 
@@ -41,6 +47,7 @@ public class CompanyServiceImpl implements CompanyService {
         return companyRepository.findAll()
                 .stream()
                 .map(converter::convert)
+                .map(view -> fieldSelectorService.selectFields(view, fields))
                 .collect(Collectors.toList());
     }
 

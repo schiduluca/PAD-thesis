@@ -11,6 +11,10 @@ public class FieldSelectorServiceImpl implements FieldSelectorService {
     @Override
     public <T> T selectFields(T element, String query) {
 
+        if(query == null || query.isEmpty()) {
+            return element;
+        }
+
         Set<String> collect = Arrays.stream(query.split(",")).collect(Collectors.toSet());
 
         Arrays.stream(element.getClass().getDeclaredFields())
