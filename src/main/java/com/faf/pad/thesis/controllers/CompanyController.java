@@ -1,15 +1,17 @@
 package com.faf.pad.thesis.controllers;
 
+import com.faf.pad.thesis.domain.views.CompanyListWrapper;
 import com.faf.pad.thesis.domain.views.CompanyView;
 import com.faf.pad.thesis.services.CompanyService;
 import com.faf.pad.thesis.services.HATEOASService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.repository.Query;
+import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import javax.ws.rs.QueryParam;
 import java.util.List;
 
@@ -23,15 +25,17 @@ public class CompanyController {
     @Autowired
     private final HATEOASService service;
 
+
+
     public CompanyController(CompanyService companyService, HATEOASService service) {
         this.companyService = companyService;
         this.service = service;
     }
 
     @RequestMapping(method = RequestMethod.GET, produces = { "application/json", "application/xml" })
-    public HttpEntity<List<CompanyView>> getAll(@QueryParam("fields") String fields) {
+    public HttpEntity<CompanyListWrapper> getAll(@QueryParam("fields") String fields) {
         List<CompanyView> collect = service.getLinksForList(companyService.getAll(fields));
-        return new ResponseEntity<>(collect, HttpStatus.OK);
+        return new ResponseEntity<>(new CompanyListWrapper(collect), HttpStatus.OK);
     }
 
     @RequestMapping(value = "/company/{id}", method = RequestMethod.GET, produces = { "application/json", "application/xml" })
@@ -41,7 +45,7 @@ public class CompanyController {
     }
 
     @RequestMapping(method = RequestMethod.POST)
-    public CompanyView createCustomer(@RequestBody CompanyView customer) {
+    public CompanyView createCompany(@Valid @RequestBody CompanyView customer) {
         return companyService.create(customer);
     }
 }

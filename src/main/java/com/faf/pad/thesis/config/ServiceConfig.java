@@ -7,6 +7,8 @@ import com.faf.pad.thesis.services.*;
 import com.faf.pad.thesis.services.impl.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.client.RestTemplateBuilder;
+import org.springframework.cloud.client.discovery.DiscoveryClient;
+import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.client.RestTemplate;
@@ -23,6 +25,9 @@ public class ServiceConfig {
     @Autowired
     private RestTemplate restTemplate;
 
+    @Autowired
+    private DiscoveryClient discoveryClient;
+
 
     @Bean
     public CustomerService customerService() {
@@ -30,18 +35,19 @@ public class ServiceConfig {
     }
 
     @Bean
+    @LoadBalanced
     public RestTemplate rest() {
         return new RestTemplateBuilder().build();
     }
 
     @Bean
     public SyncService syncService() {
-        return new SyncServiceImpl(customerRepository);
+        return new SyncServiceImpl(customerRepository, companyRepository);
     }
 
     @Bean
     public CompanyService companyService() {
-        return new CompanyServiceImpl(companyRepository, fieldSelectorService(), restTemplate);
+        return new CompanyServiceImpl(companyRepository, fieldSelectorService(), restTemplate, discoveryClient);
     }
 
     @Bean

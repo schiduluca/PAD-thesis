@@ -1,7 +1,13 @@
 package com.faf.pad.thesis.domain.views;
 
+import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.hateoas.ResourceSupport;
 
+import javax.validation.constraints.DecimalMax;
+import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.util.List;
 
@@ -9,9 +15,18 @@ import java.util.List;
 public class CompanyView extends ResourceSupport {
 
     private Long id;
+
+    @NotNull
     private String name;
+
+    @NotNull
+    @DecimalMin(value = "0")
+    @DecimalMax(value = "10")
     private Double rating;
+
+    @NotNull
     private String country;
+
     private List<CustomerView> customerViewList;
 
     public CompanyView() {
