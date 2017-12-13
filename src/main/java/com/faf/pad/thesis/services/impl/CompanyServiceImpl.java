@@ -1,16 +1,13 @@
 package com.faf.pad.thesis.services.impl;
 
-import com.faf.pad.thesis.domain.Company;
-import com.faf.pad.thesis.domain.Customer;
 import com.faf.pad.thesis.domain.converters.CompanyConverter;
 import com.faf.pad.thesis.domain.views.CompanyView;
-import com.faf.pad.thesis.domain.views.CustomerView;
 import com.faf.pad.thesis.repository.CompanyRepository;
 import com.faf.pad.thesis.services.CompanyService;
 import com.faf.pad.thesis.services.FieldSelectorService;
-import com.netflix.discovery.converters.Auto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
+import org.springframework.core.env.Environment;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.util.LinkedMultiValueMap;
@@ -30,19 +27,23 @@ public class CompanyServiceImpl implements CompanyService {
     @Autowired
     private final FieldSelectorService fieldSelectorService;
 
-    @Auto
+    @Autowired
     private final RestTemplate restTemplate;
 
     @Autowired
     private final DiscoveryClient discoveryClient;
 
+    @Autowired
+    private final Environment environment;
+
     private final CompanyConverter converter = new CompanyConverter();
 
-    public CompanyServiceImpl(CompanyRepository companyRepository, FieldSelectorService fieldSelectorService, RestTemplate restTemplate, DiscoveryClient discoveryClient) {
+    public CompanyServiceImpl(CompanyRepository companyRepository, FieldSelectorService fieldSelectorService, RestTemplate restTemplate, DiscoveryClient discoveryClient, Environment environment) {
         this.companyRepository = companyRepository;
         this.fieldSelectorService = fieldSelectorService;
         this.restTemplate = restTemplate;
         this.discoveryClient = discoveryClient;
+        this.environment = environment;
     }
 
 
@@ -71,14 +72,16 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     private void syncNodes(CompanyView view) {
-
+        String property = environment.getProperty("spring.application.name");
         MultiValueMap<String, String> headers = new LinkedMultiValueMap<>();
         headers.add("Content-Type", "application/json");
         restTemplate.getMessageConverters().add((new MappingJackson2HttpMessageConverter()));
         HttpEntity<CompanyView> request = new HttpEntity<>(view, headers);
 
         discoveryClient.getServices().forEach(element -> {
-            restTemplate.postForObject("http://" + element + "/api/sync/companies", request, CompanyView.class);
+            if(!property.equals(element)) {
+                restTemplate.postForObject("http://" + element + "/api/sync/companies", request, CompanyView.class);
+            }
         });
     }
 }

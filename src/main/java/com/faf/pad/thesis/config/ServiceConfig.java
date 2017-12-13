@@ -11,6 +11,7 @@ import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.env.Environment;
 import org.springframework.web.client.RestTemplate;
 
 @Configuration
@@ -28,10 +29,12 @@ public class ServiceConfig {
     @Autowired
     private DiscoveryClient discoveryClient;
 
+    @Autowired
+    private Environment environment;
 
     @Bean
     public CustomerService customerService() {
-        return new CustomerServiceImpl(customerRepository, restTemplate, fieldSelectorService());
+        return new CustomerServiceImpl(customerRepository, restTemplate, fieldSelectorService(), discoveryClient, environment);
     }
 
     @Bean
@@ -47,7 +50,7 @@ public class ServiceConfig {
 
     @Bean
     public CompanyService companyService() {
-        return new CompanyServiceImpl(companyRepository, fieldSelectorService(), restTemplate, discoveryClient);
+        return new CompanyServiceImpl(companyRepository, fieldSelectorService(), restTemplate, discoveryClient, environment);
     }
 
     @Bean
