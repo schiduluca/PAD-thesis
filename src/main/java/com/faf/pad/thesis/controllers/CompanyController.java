@@ -45,7 +45,7 @@ public class CompanyController {
     }
 
     @RequestMapping(method = RequestMethod.POST)
-    public CompanyView createCompany(@Valid @RequestBody CompanyView customer) {
-        return companyService.create(customer);
+    public CompanyView createCompany(@Valid @RequestBody CompanyView companyView) {
+        return companyService.create(companyView);
     }
 }

@@ -7,6 +7,7 @@ import com.faf.pad.thesis.services.CompanyService;
 import com.faf.pad.thesis.services.FieldSelectorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
+import org.springframework.cloud.client.serviceregistry.Registration;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
@@ -36,6 +37,9 @@ public class CompanyServiceImpl implements CompanyService {
     @Autowired
     private final Environment environment;
 
+    @Autowired
+    private Registration registration;
+
     private final CompanyConverter converter = new CompanyConverter();
 
     public CompanyServiceImpl(CompanyRepository companyRepository, FieldSelectorService fieldSelectorService, RestTemplate restTemplate, DiscoveryClient discoveryClient, Environment environment) {
@@ -57,6 +61,8 @@ public class CompanyServiceImpl implements CompanyService {
 
     @Override
     public List<CompanyView> getAll(String fields) {
+        System.out.println("PLEAAAAA" + registration.getServiceId());
+
         return companyRepository.findAll()
                 .stream()
                 .map(converter::convert)
@@ -77,9 +83,8 @@ public class CompanyServiceImpl implements CompanyService {
         headers.add("Content-Type", "application/json");
         restTemplate.getMessageConverters().add((new MappingJackson2HttpMessageConverter()));
         HttpEntity<CompanyView> request = new HttpEntity<>(view, headers);
-
         discoveryClient.getServices().forEach(element -> {
-            if(!property.equals(element)) {
+            if(!property.equals("loadbalancer")) {
                 restTemplate.postForObject("http://" + element + "/api/sync/companies", request, CompanyView.class);
             }
         });
