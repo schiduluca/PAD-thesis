@@ -1,7 +1,7 @@
 package com.faf.pad.thesis.domain.converters;
 
 
-import com.faf.pad.thesis.domain.Customer;
+import com.faf.pad.thesis.domain.entities.Customer;
 import com.faf.pad.thesis.domain.views.CustomerView;
 import com.google.common.base.Converter;
 

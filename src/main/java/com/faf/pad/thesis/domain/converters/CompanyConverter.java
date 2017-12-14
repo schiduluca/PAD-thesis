@@ -1,7 +1,7 @@
 package com.faf.pad.thesis.domain.converters;
 
 
-import com.faf.pad.thesis.domain.Company;
+import com.faf.pad.thesis.domain.entities.Company;
 import com.faf.pad.thesis.domain.views.CompanyView;
 import com.google.common.base.Converter;
 

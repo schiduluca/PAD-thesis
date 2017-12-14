@@ -1,18 +1,16 @@
 package com.faf.pad.thesis.domain.views;
 
-import org.hibernate.validator.constraints.Length;
-import org.hibernate.validator.constraints.NotBlank;
-import org.springframework.hateoas.ResourceSupport;
+import com.fasterxml.jackson.annotation.JsonInclude;
 
 import javax.validation.constraints.DecimalMax;
 import javax.validation.constraints.DecimalMin;
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.util.List;
 
 @XmlRootElement
-public class CompanyView extends ResourceSupport {
+@JsonInclude(JsonInclude.Include.NON_NULL)
+public class CompanyView  {
 
     private Long id;
 

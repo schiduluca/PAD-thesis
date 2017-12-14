@@ -1,18 +1,26 @@
-package com.faf.pad.thesis.domain;
+package com.faf.pad.thesis.domain.entities;
 
 import javax.persistence.*;
 import java.util.List;
 
-@Entity
+@Entity(name = "companies")
 public class Company {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
+
+    @Column(name = "name")
     private String name;
+
+    @Column(name = "rating")
     private Double rating;
+
+    @Column(name = "country")
     private String country;
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "companyId")
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "company")
     private List<Customer> customerList;
 
     public Company() {

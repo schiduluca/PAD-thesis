@@ -7,12 +7,22 @@ buildscript {
 	}
 	dependencies {
 		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+		classpath 'org.liquibase:liquibase-gradle-plugin:1.2.4'
+		classpath 'org.liquibase:liquibase-core:3.4.1'
+		classpath 'org.postgresql:postgresql:9.4-1200-jdbc41'
+		classpath 'org.yaml:snakeyaml:1.18'
 	}
 }
+
+
+
+
 
 apply plugin: 'java'
 apply plugin: 'eclipse'
 apply plugin: 'org.springframework.boot'
+apply plugin: 'liquibase'
+
 
 
 group = 'com.faf.pad'
@@ -34,7 +44,7 @@ dependencies {
 	compile('org.springframework.cloud:spring-cloud-starter-eureka')
 	compile('org.springframework.boot:spring-boot-starter-data-jpa')
 	compile('org.springframework.boot:spring-boot-starter-web')
-	compile("org.springframework.boot:spring-boot-starter-hateoas")
+	compile('org.postgresql:postgresql')
 	compile 'org.springframework:spring-oxm:4.1.5.RELEASE'
 	compile('io.springfox:springfox-swagger2:2.6.1')
 	compile('io.springfox:springfox-swagger-ui:2.6.1')
@@ -48,5 +58,20 @@ dependencies {
 dependencyManagement {
 	imports {
 		mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+	}
+}
+
+def changeLog = "$projectDir/src/main/resources/db/changelog/changelog.xml"
+task('dev') << {
+	println "executing dev"
+	liquibase {
+		activities {
+			main {
+				changeLogFile changeLog
+				url 'jdbc:postgresql://localhost/thesis'
+				username 'postgres'
+				password '123123'
+			}
+		}
 	}
 }

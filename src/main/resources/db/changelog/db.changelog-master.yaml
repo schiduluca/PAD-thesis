@@ -1,0 +1,28 @@
+databaseChangeLog:
+  - preConditions:
+    - runningAs:
+        username: postgres
+  - changeSet:
+      id: 1
+      author: Luca Schidu
+      changes:
+      - sqlFile:
+          dbms: postgresql
+          encoding: utf8
+          endDelimiter: \nGO
+          path: ../sql/create_company_table.sql
+          relativeToChangelogFile: true
+          splitStatements: true
+          stripComments: true
+   - changeSet:
+        id: 2
+        author: Luca Schidu
+        changes:
+        - sqlFile:
+            dbms: postgresql
+            encoding: utf8
+            endDelimiter: \nGO
+            path: ../sql/create_customer_table.sql
+            relativeToChangelogFile: true
+            splitStatements: true
+            stripComments: true

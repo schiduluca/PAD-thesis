@@ -45,19 +45,11 @@ public class ServiceConfig {
     }
 
     @Bean
-    public SyncService syncService() {
-        return new SyncServiceImpl(customerRepository, companyRepository);
-    }
-
-    @Bean
     public CompanyService companyService() {
         return new CompanyServiceImpl(companyRepository, fieldSelectorService(), restTemplate, discoveryClient, environment);
     }
 
-    @Bean
-    public HATEOASService hateoasService() {
-        return new HATEOASServiceImpl();
-    }
+
 
     @Bean
     public FieldSelectorService fieldSelectorService() {

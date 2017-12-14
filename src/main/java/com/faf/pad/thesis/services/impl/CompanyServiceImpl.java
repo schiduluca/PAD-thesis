@@ -61,7 +61,6 @@ public class CompanyServiceImpl implements CompanyService {
 
     @Override
     public List<CompanyView> getAll(String fields) {
-        System.out.println("PLEAAAAA" + registration.getServiceId());
 
         return companyRepository.findAll()
                 .stream()
@@ -73,20 +72,7 @@ public class CompanyServiceImpl implements CompanyService {
     @Override
     public CompanyView create(CompanyView view) {
         companyRepository.save(converter.reverse().convert(view));
-        syncNodes(view);
         return view;
     }
 
-    private void syncNodes(CompanyView view) {
-        String property = environment.getProperty("spring.application.name");
-        MultiValueMap<String, String> headers = new LinkedMultiValueMap<>();
-        headers.add("Content-Type", "application/json");
-        restTemplate.getMessageConverters().add((new MappingJackson2HttpMessageConverter()));
-        HttpEntity<CompanyView> request = new HttpEntity<>(view, headers);
-        discoveryClient.getServices().forEach(element -> {
-            if(!property.equals("loadbalancer")) {
-                restTemplate.postForObject("http://" + element + "/api/sync/companies", request, CompanyView.class);
-            }
-        });
-    }
 }

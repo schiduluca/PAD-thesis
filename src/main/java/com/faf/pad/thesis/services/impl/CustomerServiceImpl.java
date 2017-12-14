@@ -67,22 +67,7 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public CustomerView create(CustomerView customer) {
-        syncNodes(customer);
         return converter.convert(customerRepository.save(converter.reverse().convert(customer)));
     }
 
-    private void syncNodes(CustomerView view) {
-        String property = environment.getProperty("spring.application.name");
-
-        MultiValueMap<String, String> headers = new LinkedMultiValueMap<>();
-        headers.add("Content-Type", "application/json");
-        restTemplate.getMessageConverters().add((new MappingJackson2HttpMessageConverter()));
-        HttpEntity<CustomerView> request = new HttpEntity<>(view, headers);
-
-        discoveryClient.getServices().forEach(element -> {
-            if(!element.equals(property)) {
-                restTemplate.postForObject("http://" + element + "/api/sync/companies", request, CustomerView.class);
-            }
-        });
-    }
 }

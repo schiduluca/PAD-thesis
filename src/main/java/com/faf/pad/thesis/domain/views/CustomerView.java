@@ -1,8 +1,7 @@
 package com.faf.pad.thesis.domain.views;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import org.hibernate.validator.constraints.NotBlank;
-import org.springframework.hateoas.ResourceSupport;
-
 import javax.validation.constraints.DecimalMax;
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.Min;
@@ -10,7 +9,8 @@ import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
-public class CustomerView extends ResourceSupport {
+@JsonInclude(JsonInclude.Include.NON_NULL)
+public class CustomerView {
     private Long id;
     @NotNull
     private String name;

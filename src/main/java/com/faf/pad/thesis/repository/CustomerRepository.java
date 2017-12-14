@@ -1,7 +1,7 @@
 package com.faf.pad.thesis.repository;
 
 
-import com.faf.pad.thesis.domain.Customer;
+import com.faf.pad.thesis.domain.entities.Customer;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.List;

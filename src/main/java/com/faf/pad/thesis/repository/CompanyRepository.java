@@ -1,6 +1,6 @@
 package com.faf.pad.thesis.repository;
 
-import com.faf.pad.thesis.domain.Company;
+import com.faf.pad.thesis.domain.entities.Company;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.List;
