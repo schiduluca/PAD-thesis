@@ -1,5 +1,6 @@
 package com.faf.pad.thesis.domain.views;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.hateoas.ResourceSupport;
 
@@ -10,6 +11,7 @@ import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
+@JsonSerialize(include= JsonSerialize.Inclusion.NON_NULL)
 public class CustomerView extends ResourceSupport {
     private Long id;
     @NotNull

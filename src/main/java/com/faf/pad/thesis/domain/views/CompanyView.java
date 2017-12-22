@@ -1,5 +1,6 @@
 package com.faf.pad.thesis.domain.views;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.hateoas.ResourceSupport;
@@ -12,6 +13,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import java.util.List;
 
 @XmlRootElement
+@JsonSerialize(include= JsonSerialize.Inclusion.NON_NULL)
 public class CompanyView extends ResourceSupport {
 
     private Long id;
